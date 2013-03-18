@@ -1,0 +1,6 @@
+this is a test to see if the cloneing worked.
+Steps. 
+git clone http://adm0.red.7sys.net/monitoring.git
+now adding this file. 
+git push 
+see if it works.
