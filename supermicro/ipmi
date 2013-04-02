@@ -1,0 +1,32 @@
+#!/usr/bin/perl
+
+# A simple IPMI sensor and event log monitor
+# Either a) chmod +r /dev/ipmi0 b) chmod u+s ipmitool c) allow hobbit to use sudo
+
+#my $IPMI='sudo /usr/local/lib/bb-sudo/ipmitool';
+my $IPMI='ipmitool';
+
+use warnings;
+use strict;
+use Hobbit;
+
+my $bb = new Hobbit ('ipmi');
+
+$bb->print ("Sensor Data Repository:\n");
+
+foreach my $line (`$IPMI sdr 2>&1 | egrep -v "Chassis Intr|PS Status"`) {
+    if($line =~ /ok$/) {
+	$bb->color_line ('green', $line);
+    } elsif($line =~ /ns$/) {
+	$bb->color_line ('clear', $line);
+    } elsif($line =~ /Could not open device|Get Device ID command failed|Error obtaining SDR|Unable to open/) {
+	$bb->color_line ('yellow', $line); # probably we just couldn't read /dev/ipmi0
+    } else {
+	$bb->color_line ('red', $line);
+    }
+}
+
+$bb->print ("\nIPMI event log (newest 50):\n");
+$bb->print (`$IPMI sel list last 50 2>&1`);
+
+$bb->send;
