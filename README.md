@@ -2,7 +2,7 @@
 
 This repository follows the simple structure of
 
-- Hardware Platform
--- Tests
+Top Level: Hardware Platform
+Second Level: Tests and Test configuration files.
 
 Later Branching will be implimented to designate OS compatibility.
