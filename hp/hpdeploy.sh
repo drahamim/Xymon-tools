@@ -7,7 +7,7 @@ if [ -d "/etc/hobbit" ]; then
 elif [ -d "/etc/xymon-client" ]; then
 	basepath='cat /etc/xymon-client/xymonclient.cfg |grep 'XYMONCLIENTHOME='|cut -d"\"" -f2'
 elif [ -f "/etc/default/xymon-client" ]; then 
-	basepath='~xymon/client'
+	basepath='/usr/lib/xymon/client'
 else 
 	echo >&2 "ERROR: Hobbit/Xymon not installed/or found"
 	exit 1
@@ -22,7 +22,7 @@ else
 	product="PSP"
 fi
 
-if [-f "/etc/redhat-release"]; then 
+if [ -f /etc/redhat-release ]; then 
 	manager=yum
 else
 	manager=apt-get

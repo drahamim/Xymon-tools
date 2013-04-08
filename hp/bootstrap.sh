@@ -558,11 +558,7 @@ EOU
               echo "Press enter to display it ... "
               answer="yes"
 	      #read answer
-<<<<<<< HEAD
-              more $TMPFILE
-=======
               cat $TMPFILE
->>>>>>> ca6e53a2d5289112b9355663c11e4718f6f17b1f
               echo -n "Do you accept? (yes/no) "
               answer="yes"
 	      #read answer
