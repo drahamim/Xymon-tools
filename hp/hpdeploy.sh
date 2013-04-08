@@ -2,11 +2,11 @@
 ####### Begin Check######
 
 ###Check Hobbit Location
-if [-d "/etc/hobbit"]; then 
+if [ -d "/etc/hobbit" ]; then 
 	basepath='cat /etc/hobbit/hobbitclient.cfg |grep 'HOBBITCLIENTHOME='|cut -d"\"" -f2'
-elif [ -d "/etc/xymon-client"]; then
+elif [ -d "/etc/xymon-client" ]; then
 	basepath='cat /etc/xymon-client/xymonclient.cfg |grep 'XYMONCLIENTHOME='|cut -d"\"" -f2'
-elif [ -f "/etc/default/xymon-client"]; then 
+elif [ -f "/etc/default/xymon-client" ]; then 
 	basepath='~xymon/client'
 else 
 	echo >&2 "ERROR: Hobbit/Xymon not installed/or found"
@@ -14,9 +14,9 @@ else
 fi
 
 ###Check Redhat or Ubuntu and Which version of Ubuntu
-if [-f /etc/redhat-release]; then
+if [ -f /etc/redhat-release ]; then
 	product="SPP"
-elif ["$(grep DISTRIB_RELEASE= /etc/lsb-release| cut -d"=" -f2)" = "12.04"]; then
+elif [ "$(grep DISTRIB_RELEASE= /etc/lsb-release| cut -d"=" -f2)" = "12.04" ]; then
 	product="MCP"
 else
 	product="PSP"
