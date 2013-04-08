@@ -33,6 +33,8 @@ fi
 
 $manager install hp-health
 
+
+echo "copying files to Hobbit/Xymon paths"
 cp check_hp_raid.sh check_hp.sh  $basepath/ext/
 cat hp_hardware.cfg >> $basepath/etc/clientlaunch.cfg
 

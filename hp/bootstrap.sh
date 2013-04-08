@@ -558,7 +558,7 @@ EOU
               echo "Press enter to display it ... "
               answer="yes"
 	      #read answer
-              cat $TMPFILE
+              #cat $TMPFILE
               echo -n "Do you accept? (yes/no) "
               answer="yes"
 	      #read answer
