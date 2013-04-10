@@ -48,4 +48,4 @@ hobbit ALL = NOPASSWD: /sbin/hpasmcli
 
 EOF
 
-
+sed '/\ \  requiretty/^/#/' /etc/sudoers
