@@ -4,10 +4,13 @@
 ###Check Hobbit Location
 if [ -d "/etc/hobbit" ]; then 
 	basepath=`cat /etc/hobbit/hobbitclient.cfg |grep 'HOBBITCLIENTHOME='|cut -d"\"" -f2`
+	hobxy="hobbit"
 elif [ -d "/etc/xymon-client" ]; then
 	basepath=`cat /etc/xymon-client/xymonclient.cfg |grep 'XYMONCLIENTHOME='|cut -d"\"" -f2`
+	hobxy="xymon"
 elif [ -f "/etc/default/xymon-client" ]; then 
 	basepath=`/usr/lib/xymon/client`
+	hobxy="xymon"
 else 
 	echo >&2 "ERROR: Hobbit/Xymon not installed/or found"
 	exit 1
@@ -36,7 +39,12 @@ fi
 
 echo "copying files to Hobbit/Xymon paths"
 cp check_hp* $basepath/ext/
-cat hp_hardware.cfg >> $basepath/etc/clientlaunch.cfg
+if $hobxy = "xymon"; then
+cat hp_xy_hardware.cfg >> $basepath/etc/clientlaunch.cfg
+else
+cat hp_hob_hardware.cfg >> $basepath/etc/clientlaunch.cfg
+fi
+
 if [ ! grep -Fxq xymon /etc/sudoers ]; then  
 cat <<EOF >> /etc/sudoers
 xymon ALL = NOPASSWD: /sbin/hplog
