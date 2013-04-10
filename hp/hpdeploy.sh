@@ -3,16 +3,16 @@
 
 ###Check Hobbit Location
 if [ -d "/etc/hobbit" ]; then 
-	basepath='cat /etc/hobbit/hobbitclient.cfg |grep 'HOBBITCLIENTHOME='|cut -d"\"" -f2'
+	basepath=`cat /etc/hobbit/hobbitclient.cfg |grep 'HOBBITCLIENTHOME='|cut -d"\"" -f2`
 elif [ -d "/etc/xymon-client" ]; then
-	basepath='cat /etc/xymon-client/xymonclient.cfg |grep 'XYMONCLIENTHOME='|cut -d"\"" -f2'
+	basepath=`cat /etc/xymon-client/xymonclient.cfg |grep 'XYMONCLIENTHOME='|cut -d"\"" -f2`
 elif [ -f "/etc/default/xymon-client" ]; then 
-	basepath='/usr/lib/xymon/client'
+	basepath=`/usr/lib/xymon/client`
 else 
 	echo >&2 "ERROR: Hobbit/Xymon not installed/or found"
 	exit 1
 fi
-
+echo "$basepath"
 ###Check Redhat or Ubuntu and Which version of Ubuntu
 if [ -f /etc/redhat-release ]; then
 	product="SPP"
@@ -29,15 +29,15 @@ else
 fi
 #### Begin Deployment
 
-./bootstrap.sh $product
-
-$manager install hp-health
+#./bootstrap.sh $product
+#$manager update
+#$manager install hp-health
 
 
 echo "copying files to Hobbit/Xymon paths"
-cp check_hp_raid.sh check_hp.sh  $basepath/ext/
+cp check_hp* $basepath/ext/
 cat hp_hardware.cfg >> $basepath/etc/clientlaunch.cfg
-
+if [ ! grep -Fxq xymon /etc/sudoers ]; then  
 cat <<EOF >> /etc/sudoers
 xymon ALL = NOPASSWD: /sbin/hplog
 xymon ALL = NOPASSWD: /usr/sbin/hpacucli
@@ -45,7 +45,11 @@ xymon ALL = NOPASSWD: /sbin/hpasmcli
 hobbit ALL = NOPASSWD: /sbin/hplog
 hobbit ALL = NOPASSWD: /usr/sbin/hpacucli
 hobbit ALL = NOPASSWD: /sbin/hpasmcli
-
 EOF
 
-sed '/\ \  requiretty/^/#/' /etc/sudoers
+fi
+
+if grep -Fxq requiretty /etc/sudoers; then
+	sed '/\ \ requiretty/^/#/' /etc/sudoers
+fi 
+
