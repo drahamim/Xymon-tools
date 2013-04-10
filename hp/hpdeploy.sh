@@ -38,4 +38,14 @@ echo "copying files to Hobbit/Xymon paths"
 cp check_hp_raid.sh check_hp.sh  $basepath/ext/
 cat hp_hardware.cfg >> $basepath/etc/clientlaunch.cfg
 
+cat <<EOF >> /etc/sudoers
+xymon ALL = NOPASSWD: /sbin/hplog
+xymon ALL = NOPASSWD: /usr/sbin/hpacucli
+xymon ALL = NOPASSWD: /sbin/hpasmcli
+hobbit ALL = NOPASSWD: /sbin/hplog
+hobbit ALL = NOPASSWD: /usr/sbin/hpacucli
+hobbit ALL = NOPASSWD: /sbin/hpasmcli
+
+EOF
+
 
