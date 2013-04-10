@@ -32,20 +32,20 @@ else
 fi
 #### Begin Deployment
 
-#./bootstrap.sh $product
-#$manager update
-#$manager install hp-health
+./bootstrap.sh $product
+$manager update
+$manager install hp-health
 
 
 echo "copying files to Hobbit/Xymon paths"
 cp check_hp* $basepath/ext/
-if $hobxy = "xymon"; then
+if [ $hobxy = "xymon" ]; then
 cat hp_xy_hardware.cfg >> $basepath/etc/clientlaunch.cfg
 else
 cat hp_hob_hardware.cfg >> $basepath/etc/clientlaunch.cfg
 fi
 
-if [ ! grep -Fxq xymon /etc/sudoers ]; then  
+if [ ! `grep -Fxq 'xymon' /etc/sudoers` ]; then  
 cat <<EOF >> /etc/sudoers
 xymon ALL = NOPASSWD: /sbin/hplog
 xymon ALL = NOPASSWD: /usr/sbin/hpacucli
