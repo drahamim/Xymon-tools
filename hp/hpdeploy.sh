@@ -31,7 +31,7 @@ else
 	manager=apt-get
 fi
 #### Begin Deployment
-
+$manager remove hp-health
 ./bootstrap.sh $product
 $manager update
 $manager install hp-health
