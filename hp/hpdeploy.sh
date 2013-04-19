@@ -54,11 +54,10 @@ xymon ALL = NOPASSWD: /sbin/hpasmcli
 hobbit ALL = NOPASSWD: /sbin/hplog
 hobbit ALL = NOPASSWD: /usr/sbin/hpacucli
 hobbit ALL = NOPASSWD: /sbin/hpasmcli
+
+Defaults:xymon !requiretty
+Defaults:hobbit !requiretty
 EOF
 
 fi
-####### remove tty requirement
-if grep -Fxq requiretty /etc/sudoers; then
-	sed '/\ \ requiretty/^/#/' /etc/sudoers
-fi 
 
