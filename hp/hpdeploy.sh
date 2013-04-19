@@ -35,17 +35,18 @@ $manager remove hp-health -y
 ./bootstrap.sh $product
 $manager update 
 $manager install hp-health -y
-
-
+$manager install hpacucli -y
+##### Copy CFG files to Client paths
 echo "copying files to Hobbit/Xymon paths"
 cp check_hp* "$basepath/ext/"
+
 if [ $hobxy = "xymon" ]; then
 cat hp_xy_hardware.cfg >> "$basepath/etc/clientlaunch.cfg"
 else
 cat hp_hob_hardware.cfg >> "$basepath/etc/clientlaunch.cfg"
 fi
-
-if [ ! `grep -Fxq 'xymon' /etc/sudoers` ]; then  
+###### Apply needed permissions for Xymon and hobbit
+if [ ! `grep -Fq 'xymon' /etc/sudoers` ]; then  
 cat <<EOF >> /etc/sudoers
 xymon ALL = NOPASSWD: /sbin/hplog
 xymon ALL = NOPASSWD: /usr/sbin/hpacucli
@@ -56,7 +57,7 @@ hobbit ALL = NOPASSWD: /sbin/hpasmcli
 EOF
 
 fi
-
+####### remove tty requirement
 if grep -Fxq requiretty /etc/sudoers; then
 	sed '/\ \ requiretty/^/#/' /etc/sudoers
 fi 
