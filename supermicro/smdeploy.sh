@@ -1,5 +1,5 @@
 #! /bin/bash
-####### Begin Check######
+####### Begin Check and ENV configuration for Deployment######
 
 ###Check Hobbit Location
 if [ -d "/etc/hobbit" ]; then 
@@ -47,24 +47,33 @@ else
 	echo 2>&1 "Error: Issue defineing RAID"
 	exit 1
 fi
+
+####### END CHECK SECTION######
+
 #### Begin Deployment
 
 $manager update 
 
-##### Copy CFG files to Client paths
+### If the OS is redhat and has an LSI controller install MPT-status
+if [ $os = "redhat" && $raidtype = "hard" ]; then 
+	rpm -i mpt-status*
+fi
+
+##### Copy CFG files to Monitoring Client paths
 echo "copying files to Hobbit/Xymon paths"
 if [ $raidtype = "hard" ]; then
-	cp check_sm_lsi* "$basepath/ext/"
+	cat check_sm_lsi* >> "$basepath/ext/check_sm_raid.sh"
 elif [ $raidtype = "soft" ]; then
-	cp check_sm_soft* "$basepath/ext/"
-
+	cat check_sm_soft* >> "$basepath/ext/check_sm_raid.sh"
+fi
 
 if [ $hobxy = "xymon" ]; then
-cat sm_xy_hardware.cfg >> "$basepath/etc/clientlaunch.cfg"
+	cat sm_xy_hardware.cfg >> "$basepath/etc/clientlaunch.cfg"
 else
-cat sm_hob_hardware.cfg >> "$basepath/etc/clientlaunch.cfg"
+	cat sm_hob_hardware.cfg >> "$basepath/etc/clientlaunch.cfg"
 fi
-###### Apply needed permissions for Xymon and hobbit
+
+###### Apply needed permissions for Xymon and Hobbit
 if [ ! `grep -Fq 'xymon' /etc/sudoers` ]; then  
 cat <<EOF >> /etc/sudoers
 xymon ALL = NOPASSWD: /sbin/hplog
@@ -79,4 +88,3 @@ Defaults:hobbit !requiretty
 EOF
 
 fi
-
