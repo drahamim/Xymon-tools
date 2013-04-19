@@ -38,11 +38,11 @@ $manager install hp-health
 
 
 echo "copying files to Hobbit/Xymon paths"
-cp check_hp* $basepath/ext/
+cp check_hp* "$basepath/ext/"
 if [ $hobxy = "xymon" ]; then
-cat hp_xy_hardware.cfg >> $basepath/etc/clientlaunch.cfg
+cat hp_xy_hardware.cfg >> "$basepath/etc/clientlaunch.cfg"
 else
-cat hp_hob_hardware.cfg >> $basepath/etc/clientlaunch.cfg
+cat hp_hob_hardware.cfg >> "$basepath/etc/clientlaunch.cfg"
 fi
 
 if [ ! `grep -Fxq 'xymon' /etc/sudoers` ]; then  
