@@ -9,7 +9,7 @@ elif [ -d "/etc/xymon-client" ]; then
 	basepath=`cat /etc/xymon-client/xymonclient.cfg |grep 'XYMONCLIENTHOME='|cut -d"\"" -f2`
 	hobxy="xymon"
 elif [ -f "/etc/default/xymon-client" ]; then 
-	basepath=`/usr/lib/xymon/client`
+	basepath="/usr/lib/xymon/client"
 	hobxy="xymon"
 else 
 	echo >&2 "ERROR: Hobbit/Xymon not installed/or found"
