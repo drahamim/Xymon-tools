@@ -31,10 +31,10 @@ else
 	manager=apt-get
 fi
 #### Begin Deployment
-$manager remove hp-health
+$manager remove hp-health -y
 ./bootstrap.sh $product
-$manager update
-$manager install hp-health
+$manager update 
+$manager install hp-health -y
 
 
 echo "copying files to Hobbit/Xymon paths"
