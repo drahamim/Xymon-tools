@@ -30,7 +30,7 @@ if [ -f /etc/redhat-release ]; then
 else
 	manager=apt-get
 fi
-
+echo "$(os) with $(manager)"
 ### Check for RAID controller and which type
 if [ `lspci |grep -qi 'RAID'` ]; then
 	raid="`lspci |grep -i 'RAID'`"
@@ -47,12 +47,17 @@ else
 	echo 2>&1 "Error: Issue defineing RAID"
 	exit 1
 fi
+
+echo " $(raid) and $(raidtype)"
+
 ### Check fro IPMI utilitiy
 if [ -f /usr/bin/ipmitool ]; then 
 	ipmit="yes"
 else
 	ipmit="no"
 fi
+
+echo "$(ipmit)"
 ####### END CHECK SECTION######
 
 #### Begin Deployment
