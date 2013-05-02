@@ -32,14 +32,14 @@ else
 fi
 
 ### Check for RAID controller and which type
-if [ "lspci |grep -qi 'RAID'" ]; then
+if [ `lspci |grep -qi 'RAID'` ]; then
 	raid="`lspci |grep -i 'RAID'`"
 else 
 	echo 2>&1 'No raid controller found'
 	exit 1
 fi
 
-if [ "$raid | grep -qi 'lsi'" ]; then
+if [ `$raid | grep -qi 'lsi'` ]; then
 	raidtype="hard"
 elif [ $raid | grep -fqi 'Intel' ]; then
 	raidtype="soft"
@@ -65,7 +65,7 @@ if [ "$os = 'redhat' && $raidtype = 'hard'" ]; then
 fi
 
 ### If ipmitool is not installed install it
-if [ $ipmit = "no" ]; then 
+if [ `$ipmit = "no"` ]; then 
 	$manager install ipmitool
 fi
 
@@ -86,24 +86,7 @@ else
 fi
 
 if [ "$hobxy = 'xymon' && $ipmilaunch = 'no'" ]; then
-	cat sm_xy_ipmi.cfg
-
-
-
-###### Apply needed permissions for Xymon and Hobbit
-if [ ! `grep -Fq 'xymon' /etc/sudoers` ]; then  
-cat <<EOF >> /etc/sudoers
-xymon ALL = NOPASSWD: /sbin/hplog
-xymon ALL = NOPASSWD: /usr/sbin/hpacucli
-xymon ALL = NOPASSWD: /sbin/hpasmcli
-xymon ALL = NOPASSWD: /usr/bin/ipmitool
-hobbit ALL = NOPASSWD: /sbin/hplog
-hobbit ALL = NOPASSWD: /usr/sbin/hpacucli
-hobbit ALL = NOPASSWD: /sbin/hpasmcli
-hobbit ALL = NOPASSWD: /usr/bin/ipmitool
-
-Defaults:xymon !requiretty
-Defaults:hobbit !requiretty
-EOF
-
+	cat sm_xy_ipmi.cfg >> "$basepath/etc/clientlaunch.cfg"
+else
+	cat sm_hob_ipmi.cfg >> "$basepath/etc/clientlaunch.cfg"
 fi
