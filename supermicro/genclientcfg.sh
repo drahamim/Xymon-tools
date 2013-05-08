@@ -46,15 +46,50 @@ echo "hobbit ALL=NOPASSWD:  /opt/MegaRAID/MegaCli/MegaCli64" #>> megacli
 fi
 }
 
-#function xyRAIDsoft {
+function xyRAIDsoft {
 
-function xysudoIPMI {
-   cat <<EOF >> tmpfile1
-   xymon ALL = NOPASSWD: /usr/bin/ipmitool
-   hobbit ALL = NOPASSWD: /usr/bin/ipmitool
-EOF
-   exit
+
+[sm_raid]
+        ENVFILE $XYMONCLIENTHOME/etc/xymonclient.cfg
+        CMD $XYMONCLIENTHOME/ext/check_sm_raid.sh
+        LOGFILE $XYMONCLIENTHOME/logs/check_sm_raid.log
+        INTERVAL 5m
+
 }
+
+function xyRAIDhard {
+
+}
+
+function hobRAIDsoft {
+
+}
+
+function hobRAIDhard {
+
+}
+###### Functions for HP servers
+function HPhobRAID {
+
+}
+
+function HPxyRAID {
+
+}
+
+function HPhobMON {
+
+}
+
+function HPxyMON {
+
+}
+
+function hpSUDO {
+
+}
+
+
 
 
 case $1 in 
