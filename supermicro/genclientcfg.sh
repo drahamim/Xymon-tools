@@ -17,7 +17,7 @@ function usage {
    echo "--help, -help -H, -h"
  
 }
-
+###### Sudo Entries Section
 function hobxyIPMIsudo {
 if [ ! `grep -Fq "ipmitool" /etc/sudoers` ]; then
    cat <<EOF >> hobxyipmisudo
@@ -46,8 +46,22 @@ echo "hobbit ALL=NOPASSWD:  /opt/MegaRAID/MegaCli/MegaCli64" #>> megacli
 fi
 }
 
-function xyRAIDsoft {
+function HPsudo {
+if [ ! `grep -Fq 'hp' /etc/sudoers` ]; then
+cat <<EOF >> /etc/sudoers
+xymon ALL = NOPASSWD: /sbin/hplog
+xymon ALL = NOPASSWD: /usr/sbin/hpacucli
+xymon ALL = NOPASSWD: /sbin/hpasmcli
+hobbit ALL = NOPASSWD: /sbin/hplog
+hobbit ALL = NOPASSWD: /usr/sbin/hpacucli
+hobbit ALL = NOPASSWD: /sbin/hpasmcli
+EOF
+fi
+}
 
+#### ClientLaunch Config Functions
+
+function xyRAIDsoft {
 
 [sm_raid]
         ENVFILE $XYMONCLIENTHOME/etc/xymonclient.cfg
@@ -58,7 +72,15 @@ function xyRAIDsoft {
 }
 
 function xyRAIDhard {
-
+if [ ! `grep -fq "sm_raid" $basepath/etc/clientlaunch.cfg` ]; then
+cat << EOF >> $basepath/etc/clientlaunch.cfg
+[sm_raid]
+        ENVFILE $XYMONCLIENTHOME/etc/xymonclient.cfg
+        CMD $XYMONCLIENTHOME/ext/check_sm_raid.sh
+        LOGFILE $XYMONCLIENTHOME/logs/check_sm_raid.log
+        INTERVAL 5m
+EOF
+fi
 }
 
 function hobRAIDsoft {
@@ -84,12 +106,6 @@ function HPhobMON {
 function HPxyMON {
 
 }
-
-function hpSUDO {
-
-}
-
-
 
 
 case $1 in 
