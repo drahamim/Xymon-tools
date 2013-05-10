@@ -1,0 +1,83 @@
+      "java.lang:type=GarbageCollector,name=ConcurrentMarkSweep":
+        - CollectionCount
+        - CollectionTime
+      "org.apache.cassandra.db:type=CompactionManager":
+        - TotalBytesCompacted
+        - CompletedTasks
+        - TotalCompactionsCompleted
+        - PendingTasks
+      "org.apache.cassandra.db:type=Caches":
+        - KeyCacheRecentHitRate 
+      "org.apache.cassandra.db:type=StorageProxy":
+        - RecentRangeLatencyMicros
+        - RecentReadLatencyMicros
+        - RecentWriteLatencyMicros
+        - ReadOperations
+        - RangeOperations
+        - WriteOperations
+      "org.apache.cassandra.metrics:type=ClientRequestMetrics,name=ReadTimeouts":
+        - Count
+      "org.apache.cassandra.metrics:type=ClientRequestMetrics,name=ReadUnavailables":
+        - Count
+      "org.apache.cassandra.metrics:type=ClientRequestMetrics,name=WriteTimeouts":
+        - Count
+      "org.apache.cassandra.metrics:type=ClientRequestMetrics,name=WriteUnavailables":
+        - Count
+      "org.apache.cassandra.metrics:type=ClientRequest,scope=RangeSlice,name=Latency":
+        - MeanRate
+        - OneMinuteRate
+      "org.apache.cassandra.metrics:type=ClientRequest,scope=RangeSlice,name=Timeouts":
+        - Count
+      "org.apache.cassandra.metrics:type=ClientRequest,scope=RangeSlice,name=Unavailables":
+        - Count
+      "org.apache.cassandra.metrics:type=CommitLog,name=CompletedTasks":
+        - Value
+      "org.apache.cassandra.metrics:type=CommitLog,name=PendingTasks":
+        - Value
+      "org.apache.cassandra.metrics:type=CommitLog,name=TotalCommitLogSize":
+        - Value
+      "org.apache.cassandra.internal:type=AntiEntropyStage":
+        - ActiveCount
+        - CompletedTasks
+        - PendingTasks
+        - TotalBlockedTasks
+      "org.apache.cassandra.internal:type=FlushWriter":
+        - ActiveCount
+        - CompletedTasks
+        - PendingTasks
+        - TotalBlockedTasks
+      "org.apache.cassandra.internal:type=GossipStage":
+        - ActiveCount
+        - CompletedTasks
+        - PendingTasks
+        - TotalBlockedTasks
+      "org.apache.cassandra.internal:type=HintedHandoff":
+        - ActiveCount
+        - CompletedTasks
+        - PendingTasks
+        - TotalBlockedTasks
+      "org.apache.cassandra.internal:type=MemtablePostFlusher":
+        - ActiveCount
+        - CompletedTasks
+        - PendingTasks
+        - TotalBlockedTasks
+      "org.apache.cassandra.request:type=MutationStage":
+        - ActiveCount
+        - CurrentlyBlockedTasks
+        - PendingTasks
+      "org.apache.cassandra.request:type=ReadRepairStage":
+        - ActiveCount
+        - CurrentlyBlockedTasks
+        - PendingTasks
+      "org.apache.cassandra.request:type=ReadStage":
+        - ActiveCount
+        - CurrentlyBlockedTasks
+        - PendingTasks
+      "org.apache.cassandra.request:type=ReplicateOnWriteStage":
+        - ActiveCount
+        - CurrentlyBlockedTasks
+        - PendingTasks
+      "org.apache.cassandra.request:type=RequestResponseStage":
+        - ActiveCount
+        - CurrentlyBlockedTasks
+        - PendingTasks
