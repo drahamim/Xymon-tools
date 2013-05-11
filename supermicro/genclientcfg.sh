@@ -176,6 +176,33 @@ cat << EOF >> $basepath/etc/clientlaunch.cfg
 EOF
 fi
 }
+
+function hobIPMIcfg {
+if [ ! `grep -fq "ipmi" $basepath/etc/clientlaunch.cfg` ]; then
+cat << EOF >> $basepath/etc/clientlaunch.cfg
+[ipmi]
+        #DISABLED
+        ENVFILE $HOBBITCLIENTHOME/etc/hobbitclient.cfg
+        CMD $HOBBITCLIENTHOME/ext/ipmi
+        LOGFILE $HOBBITCLIENTHOME/logs/hobbitclient.log
+	INTERVAL 5m
+EOF
+fi
+}
+
+function xyIPMIcfg {
+if [ ! `grep -fq "ipmi" $basepath/etc/clientlaunch.cfg` ]; then
+cat << EOF >> $basepath/etc/clientlaunch.cfg
+[ipmi]
+        #DISABLED
+        ENVFILE $XYMONCLIENTHOME/etc/xymonclient.cfg
+        CMD $XYMONCLIENTHOME/ext/ipmi
+        LOGFILE $XYMONCLIENTHOME/logs/xymonclient.log
+        INTERVAL 5m
+EOF
+fi
+}
+
 ###### Monitoring Script Deployment
 function softRAIDsh {
 cp check_sm_soft.sh "$basepath/ext/"
@@ -196,7 +223,6 @@ cp check_hp_raid.sh "$basepath/ext/"
 function hpHWsh {
 cp check_hp.sh "$basepath/ext/"
 }
-
 ###### Tool installatin section
 function HPtools {
 if [ -f /etc/redhat-release ]; then
@@ -219,6 +245,13 @@ if [ "$os = 'redhat' && $raidtype = 'hard'" ]; then
 fi
 }
 
+function ipmitools {
+if [ ! -e /usr/bin/ipmitool ]; then
+	$manager update
+	$manager install ipmitool -y
+fi
+}
+
 case $1 in
 	"-xymon"|"--xymon") 
 		monitor=$2; client="xymon"
@@ -229,6 +262,8 @@ case $1 in
 	"-h"|"--help"|"-H"|"-help")
 		usage
 		;;
+	"--hp"|"-hp")
+		system="hp" client=$2
 	"--tty"|"-tty") 
 		ttydisable
 		;;
@@ -237,6 +272,38 @@ case $1 in
 		exit 1
 		;;	
 	esac
+
+
+if [ `$system="hp" && $client="hobbit"` ]; then
+	HPtools
+	HPsudo
+	HPhobHWcfg
+	HPhobRAIDcfg
+	hpRAIDsh
+	hpHWsh
+	ttydisable
+elif [ `$system="hp" && $client="xymon"` ]; then
+	HPsudo
+	HPtools
+	HPxyHWcfg
+	HPxyRAIDcfg
+	hpRAIDsh
+	hpHWsh
+	ttydisable
+else 
+	notHP
+fi
+
+function notHP { 
+if [ `$client="xymon" && $monitor="ipmi"` ]; then
+	hobxyIPMIsudo
+	ttydisable
+	IPMIsh
+	xyIPMIcfg
+	ipmitools
+elif [ `$client="hobbit" && $m		
+
+
 ###### NOTES SECTION
 #function hobxyIPMIsudo ## deploy IPMI sudo priv
 #function ttydisable    ## disable tty for mon
@@ -265,13 +332,13 @@ function usage {
    echo "$(basename $0) --hobbit ipmi"
    echo "$(basename $0) --hobbit lsi"
    echo "$(basename $0) --hobbit soft"
-   echo "$(basename $0) --hobbit soft"
-   echo "$(basename $0) --hobbit soft"
+   echo "$(basename $0) --hp hobbit"
+   echo "$(basename $0) --hp xymon"
    echo "$(basename $0) --tty"
    echo "$(basename $0) --help"
    echo "Options:"
    echo "--xymon, -xymon"
    echo "--hobbit, -hobbit"
+   echo "--hp, -hp"
    echo "--tty, -tty"
    echo "--help, -help -H, -h"
-
