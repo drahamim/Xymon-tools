@@ -255,15 +255,18 @@ fi
 case $1 in
 	"-xymon"|"--xymon") 
 		monitor=$2; client="xymon"
+		xymon
 		;;
 	"-hobbit"|"--hobbit") 
 		monitor=$2; client="hobbit"
+		hobbit
 		;;
 	"-h"|"--help"|"-H"|"-help")
 		usage
 		;;
 	"--hp"|"-hp")
 		system="hp" client=$2
+		hp
 	"--tty"|"-tty") 
 		ttydisable
 		;;
@@ -273,7 +276,7 @@ case $1 in
 		;;	
 	esac
 
-
+function hp {
 if [ `$system="hp" && $client="hobbit"` ]; then
 	HPtools
 	HPsudo
@@ -291,19 +294,37 @@ elif [ `$system="hp" && $client="xymon"` ]; then
 	hpHWsh
 	ttydisable
 else 
-	notHP
+	echo "Error in hp function"
+	exit 1
 fi
+}
 
-function notHP { 
-if [ `$client="xymon" && $monitor="ipmi"` ]; then
+function xymon { 
+if [ "$client='xymon' && $monitor='ipmi'" ]; then
 	hobxyIPMIsudo
 	ttydisable
 	IPMIsh
 	xyIPMIcfg
 	ipmitools
-elif [ `$client="hobbit" && $m		
+elif [ "$client='xymon' && $monitor='soft'" ];then
+	ttydisable
+	xyRAIDcfg
+	softRAIDsh
+elif [ "$client='xymon' && $monitor='lsi'" ];then
+	ttydisable
+	megaclisudo
+	xyRAIDcfg
+	hardRAIDsh
+	hardRAIDtools
+else
+	echo "Error in xymon function"
+	exit 1
+fi
+}
 
-
+function hobbit {
+if [ "$client='hobbit' && $monitor='ipmi'" ];then
+	
 ###### NOTES SECTION
 #function hobxyIPMIsudo ## deploy IPMI sudo priv
 #function ttydisable    ## disable tty for mon
