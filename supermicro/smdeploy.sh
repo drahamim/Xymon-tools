@@ -30,16 +30,16 @@ if [ -f /etc/redhat-release ]; then
 else
 	manager=apt-get
 fi
-echo "$(os) with $(manager)"
+echo "${os} with ${manager}"
 ### Check for RAID controller and which type
-if [ `lspci |grep -qi 'RAID'` ]; then
+if [ 'lspci |grep -qi RAID' ]; then
 	raid="`lspci |grep -i 'RAID'`"
 else 
 	echo 2>&1 'No raid controller found'
 	exit 1
 fi
 
-if [ `$raid | grep -qi 'lsi'` ]; then
+if [ '$raid | grep -qi 'lsi'' ]; then
 	raidtype="hard"
 elif [ $raid | grep -fqi 'Intel' ]; then
 	raidtype="soft"
@@ -48,7 +48,7 @@ else
 	exit 1
 fi
 
-echo " $(raid) and $(raidtype)"
+echo " ${raid} and ${raidtype}"
 
 ### Check fro IPMI utilitiy
 if [ -f /usr/bin/ipmitool ]; then 
@@ -57,7 +57,7 @@ else
 	ipmit="no"
 fi
 
-echo "$(ipmit)"
+echo "${ipmit}"
 ####### END CHECK SECTION######
 
 #### Begin Deployment
@@ -66,7 +66,7 @@ $manager update
 
 ### If the OS is redhat and has an LSI controller install MPT-status
 if [ "$os = 'redhat' && $raidtype = 'hard'" ]; then 
-	rpm -i mpt-status*
+	rpm -i MegaCli*
 fi
 
 ### If ipmitool is not installed install it
