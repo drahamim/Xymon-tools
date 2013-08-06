@@ -50,7 +50,7 @@ elif [ -f "/etc/default/xymon-client" ]; then
         basepath="/usr/lib/xymon/client"
         hobxy="xymon"
 else
-        echo >&2 "ERROR: Hobbit/Xymon not installed/or found"
+        echo "ERROR: Hobbit/Xymon not installed/or found"
         exit 1
 fi
 
@@ -275,6 +275,7 @@ case $1 in
 		;;
 	"-h"|"--help"|"-H"|"-help")
 		usage
+		exit 0
 		;;
 	"--hp"|"-hp")
 		system="hp" client=$2
@@ -285,7 +286,7 @@ case $1 in
 		;;
 	*)
 		usage
-		exit 1
+		exit 0
 		;;	
 	esac
 
@@ -353,7 +354,7 @@ elif [ "$client='hobbit' && $monitor='lsi'" ];then
         hardRAIDsh
         hardRAIDtools
 else
-        echo "Error in xymon function"
+        echo "Error in hobbit function"
         exit 1
 fi
 }
