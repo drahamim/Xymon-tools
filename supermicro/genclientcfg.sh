@@ -20,23 +20,23 @@
 #function hardRAIDtools	## software RAID mon tools installation REDhat
                                                             
 function usage {
-   echo "Usage:" 
+   echo "Usage:"
    echo "$(basename $0) --xymon ipmi"
    echo "$(basename $0) --xymon lsi"
    echo "$(basename $0) --xymon soft"
    echo "$(basename $0) --hobbit ipmi"
    echo "$(basename $0) --hobbit lsi"
    echo "$(basename $0) --hobbit soft"
-   echo "$(basename $0) --hobbit soft"
-   echo "$(basename $0) --hobbit soft"
+   echo "$(basename $0) --hp hobbit"
+   echo "$(basename $0) --hp xymon"
    echo "$(basename $0) --tty"
    echo "$(basename $0) --help"
    echo "Options:"
    echo "--xymon, -xymon"
    echo "--hobbit, -hobbit"
+   echo "--hp, -hp"
    echo "--tty, -tty"
    echo "--help, -help -H, -h"
- 
 }
 
 ### Environment pre-flight checks
@@ -65,7 +65,8 @@ fi
 ###### Sudo Entries Section
 function hobxyIPMIsudo {
 if [ ! `grep -Fq "ipmitool" /etc/sudoers` ]; then
-   cat <<EOF >> hobxyipmisudo
+	echo "Sudo for IPMI"
+	 cat <<EOF >> hobxyipmisudo
 xymon ALL = NOPASSWD: /usr/bin/ipmitool
 hobbit ALL = NOPASSWD: /usr/bin/ipmitool
 EOF
@@ -74,18 +75,20 @@ fi
 
 function ttydisable {
 if [ ! `grep -Fq "Defaults:xymon" /etc/sudoers` ]; then
+	echo "sudo tty for monitoring"
 cat <<EOF >> ttydisable
 Defaults:xymon !requiretty
 Defaults:hobbit !requiretty
 EOF
 else 
-	echo "tty failed"
+	echo "tty disable failed"
 	exit 1
 fi
 }
 
 function megaclisudo {
 if [ ! `grep -Fq "MegaCli64" /etc/sudoers` ]; then
+	ehco "sudo for MegaCli Monitor"
 echo "xymon  ALL=NOPASSWD:  /opt/MegaRAID/MegaCli/MegaCli64" #>> megacli
 echo "hobbit ALL=NOPASSWD:  /opt/MegaRAID/MegaCli/MegaCli64" #>> megacli
 fi
@@ -93,6 +96,7 @@ fi
 
 function HPsudo {
 if [ ! `grep -Fq 'hp' /etc/sudoers` ]; then
+	echo "HP sudo"
 cat <<EOF >> /etc/sudoers
 xymon ALL = NOPASSWD: /sbin/hplog
 xymon ALL = NOPASSWD: /usr/sbin/hpacucli
@@ -107,6 +111,7 @@ fi
 #### ClientLaunch Config Functions
 function xyRAIDcfg {
 if [ ! `grep -fq "sm_raid" $basepath/etc/clientlaunch.cfg` ]; then
+	echo "xymon Raid CFG"
 cat << EOF >> $basepath/etc/clientlaunch.cfg
 [sm_raid]
         ENVFILE $XYMONCLIENTHOME/etc/xymonclient.cfg
@@ -119,6 +124,7 @@ fi
 
 function hobRAIDcfg {
 if [ ! `grep -fq "sm_raid" $basepath/etc/clientlaunch.cfg` ]; then
+	echo "hobbit Raid CFG"
 cat << EOF >> $basepath/etc/clientlaunch.cfg
 [sm_raid]
         ENVFILE $HOBBITCLIENTHOME/etc/hobbitclient.cfg
@@ -131,6 +137,7 @@ fi
 
 function HPhobRAIDcfg {
 if [ ! `grep -fq "hp_raid" $basepath/etc/clientlaunch.cfg` ]; then
+	echo "HP hobbit RAID config"
 cat << EOF >> $basepath/etc/clientlaunch.cfg
 [hp_raid]
         ENVFILE $HOBBITCLIENTHOME/etc/hobbitclient.cfg
@@ -143,6 +150,7 @@ fi
 
 function HPxyRAIDcfg {
 if [ ! `grep -fq "hp_raid" $basepath/etc/clientlaunch.cfg` ]; then
+	echo "HP xymon Raid cfg"
 cat << EOF >> $basepath/etc/clientlaunch.cfg
 [hp_raid]
         ENVFILE $XYMONCLIENTHOME/etc/xymonclient.cfg
@@ -155,6 +163,7 @@ fi
 
 function HPhobHWcfg {
 if [ ! `grep -fq "hp_hardware" $basepath/etc/clientlaunch.cfg` ]; then
+	echo "HP hob health cfg"
 cat << EOF >> $basepath/etc/clientlaunch.cfg
 [hp_hardware]
         ENVFILE $HOBBITCLIENTHOME/etc/hobbitclient.cfg
@@ -167,6 +176,7 @@ fi
 
 function HPxyHWcfg {
 if [ ! `grep -fq "hp_hardware" $basepath/etc/clientlaunch.cfg` ]; then
+	echo "HP xymon health CFG"
 cat << EOF >> $basepath/etc/clientlaunch.cfg
 [hp_hardware]
         ENVFILE $XYMONCLIENTHOME/etc/xymonclient.cfg
@@ -178,7 +188,8 @@ fi
 }
 
 function hobIPMIcfg {
-if [ ! `grep -fq "ipmi" $basepath/etc/clientlaunch.cfg` ]; then
+if [ ! `grep -fq "ipmi" $basepath/tc/clientlaunch.cfg` ]; then
+	echo "hobbit ipmi CFG"
 cat << EOF >> $basepath/etc/clientlaunch.cfg
 [ipmi]
         #DISABLED
@@ -192,6 +203,7 @@ fi
 
 function xyIPMIcfg {
 if [ ! `grep -fq "ipmi" $basepath/etc/clientlaunch.cfg` ]; then
+	echo "xymon ipmi cfg"
 cat << EOF >> $basepath/etc/clientlaunch.cfg
 [ipmi]
         #DISABLED
@@ -267,6 +279,7 @@ case $1 in
 	"--hp"|"-hp")
 		system="hp" client=$2
 		hp
+		;;
 	"--tty"|"-tty") 
 		ttydisable
 		;;
@@ -322,8 +335,8 @@ else
 fi
 }
 
-function hobbit {
-if [ "$client='hobbit' && $monitor='ipmi'" ];then
+#function hobbit {
+#if [ "$client='hobbit' && $monitor='ipmi'" ];then
 	
 ###### NOTES SECTION
 #function hobxyIPMIsudo ## deploy IPMI sudo priv
@@ -345,7 +358,7 @@ if [ "$client='hobbit' && $monitor='ipmi'" ];then
 #function hardRAIDtools ## software RAID mon tools installation REDhat
 
 
-function usage {
+echo "this is the end of days"
    echo "Usage:"
    echo "$(basename $0) --xymon ipmi"
    echo "$(basename $0) --xymon lsi"
