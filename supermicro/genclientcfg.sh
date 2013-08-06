@@ -335,6 +335,29 @@ else
 fi
 }
 
+function hobbit {
+if [ "$client='hobbit' && $monitor='ipmi'" ]; then
+        hobxyIPMIsudo
+        ttydisable
+        IPMIsh
+        hobIPMIcfg
+        ipmitools
+elif [ "$client='hobbit' && $monitor='soft'" ];then
+        ttydisable
+        hobRAIDcfg
+        softRAIDsh
+elif [ "$client='hobbit' && $monitor='lsi'" ];then
+        ttydisable
+        megaclisudo
+        hobRAIDcfg
+        hardRAIDsh
+        hardRAIDtools
+else
+        echo "Error in xymon function"
+        exit 1
+fi
+}
+
 #function hobbit {
 #if [ "$client='hobbit' && $monitor='ipmi'" ];then
 	
