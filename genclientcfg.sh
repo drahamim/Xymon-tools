@@ -263,6 +263,7 @@ if [ ! -e /usr/bin/ipmitool ]; then
 	$manager install ipmitool -y
 fi
 }
+##### Here comes the Brains of this Script
 
 case $1 in
 	"-xymon"|"--xymon") 
@@ -290,6 +291,7 @@ case $1 in
 		;;	
 	esac
 
+###### HP Deployment section
 function hp {
 if [ `$system="hp" && $client="hobbit"` ]; then
 	HPtools
@@ -312,6 +314,8 @@ else
 	exit 1
 fi
 }
+
+####### Generic Xymon deployment
 
 function xymon { 
 if [ "$client='xymon' && $monitor='ipmi'" ]; then
@@ -336,6 +340,8 @@ else
 fi
 }
 
+##### Generic Hobbit deployment
+
 function hobbit {
 if [ "$client='hobbit' && $monitor='ipmi'" ]; then
         hobxyIPMIsudo
@@ -358,6 +364,8 @@ else
         exit 1
 fi
 }
+
+exit 0
 
 #function hobbit {
 #if [ "$client='hobbit' && $monitor='ipmi'" ];then
