@@ -24,11 +24,15 @@ if test "$BBHOME" = ""; then
   exit 1
 fi
 
-CMD="/sbin/dmraid -s"
+if test `/sbin/dmraid -s` = "no raid disks" ; then
+	mdstat	
+else
+	dmraid
 
 #######################
 ######## Function
 #######################
+function dmraid {
 sudo $CMD >> $LOGFILE
 if grep "status" $LOGFILE |grep inconsistent; then
 	DISK=`dmraid -r |sort -rn| diff $DISKLIST - |grep dev |cut -c3-100`
@@ -39,6 +43,22 @@ else
 	MSGLINE="All is well"
 fi
 DETAILS=`cat $LOGFILE`
+}
+
+function mdstat {
+
+ if [ `cat /proc/mdstat | grep "(F)"` -eq 0 ] ; then 
+	COLOR="red"
+else
+	COLOR="green"
+
+fi
+
+DETAILS=`cat /proc/mdstat`
+
+}
+
+
 $BB $BBDISP "status $MACHINE.$COLUMN $COLOR `date`
 ${MSGLINE}
 
