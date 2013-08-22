@@ -24,11 +24,11 @@ if test "$BBHOME" = ""; then
   exit 1
 fi
 
-if test `/sbin/dmraid -s` = "no raid disks" ; then
+if sudo /sbin/dmraid -s| grep "no raid disks" ; then
 	mdstat	
 else
 	dmraid
-
+fi
 #######################
 ######## Function
 #######################
@@ -67,4 +67,4 @@ ${DETAILS}
 $LOCATIONLINE
 "
 rm $LOGFILE
-
+exit 0
