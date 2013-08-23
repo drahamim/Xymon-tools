@@ -108,6 +108,14 @@ EOF
 fi
 }
 
+function softRAIDsudo {
+if [ ! `grep -Fq "mdstat" /etc/sudoers` ]; then
+        ehco "sudo for mdstat"
+echo "xymon  ALL=NOPASSWD:  /sbin/mdstat" >> /etc/sudoers
+echo "hobbit ALL=NOPASSWD:  /sbin/mdstat" >> /etc/sudoers
+fi
+}
+
 #### ClientLaunch Config Functions
 function xyRAIDcfg {
 if [ ! `grep -fq "sm_raid" $basepath/etc/clientlaunch.cfg` ]; then
@@ -328,6 +336,7 @@ elif [ "$client='xymon' && $monitor='soft'" ];then
 	ttydisable
 	xyRAIDcfg
 	softRAIDsh
+	softRAIDsudo
 elif [ "$client='xymon' && $monitor='lsi'" ];then
 	ttydisable
 	megaclisudo
@@ -353,6 +362,7 @@ elif [ "$client='hobbit' && $monitor='soft'" ];then
         ttydisable
         hobRAIDcfg
         softRAIDsh
+	softRAIDsudo
 elif [ "$client='hobbit' && $monitor='lsi'" ];then
         ttydisable
         megaclisudo
