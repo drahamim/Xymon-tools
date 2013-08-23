@@ -19,18 +19,13 @@ EOF
 ##########
 ##### Pre-flight Checks
 ##########
-if test "$BBHOME" = ""; then
-  echo "BBHOME is not set...exiting"
-  exit 1
-fi
+#if test "$BBHOME" = ""; then
+#  echo "BBHOME is not set...exiting"
+#  exit 1
+#fi
 
-if sudo /sbin/dmraid -s| grep "no raid disks" ; then
-	mdstat	
-else
-	dmraid
-fi
 #######################
-######## Function
+######## Functions
 #######################
 function dmraid {
 sudo $CMD >> $LOGFILE
@@ -47,10 +42,10 @@ DETAILS=`cat $LOGFILE`
 
 function mdstat {
 
- if [ `cat /proc/mdstat | grep "(F)"` -eq 0 ] ; then 
-	COLOR="red"
-else
+if [ 'cat /proc/mdstat | grep "(F)" -eq 0' ] ; then 
 	COLOR="green"
+else
+	COLOR="red"
 
 fi
 
@@ -58,6 +53,11 @@ DETAILS=`cat /proc/mdstat`
 
 }
 
+if sudo /sbin/dmraid -s | grep "no raid disks" ; then
+        mdstat
+else
+        dmraid
+fi
 
 $BB $BBDISP "status $MACHINE.$COLUMN $COLOR `date`
 ${MSGLINE}
