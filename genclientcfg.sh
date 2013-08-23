@@ -113,6 +113,8 @@ if [ ! `grep -Fq "mdstat" /etc/sudoers` ]; then
         ehco "sudo for mdstat"
 echo "xymon  ALL=NOPASSWD:  /sbin/mdstat" >> /etc/sudoers
 echo "hobbit ALL=NOPASSWD:  /sbin/mdstat" >> /etc/sudoers
+echo "xymon  ALL=NOPASSWD:  /sbin/dmraid" >> /etc/sudoers
+echo "hobbit ALL=NOPASSWD:  /sbin/dmraid" >> /etc/sudoers
 fi
 }
 
@@ -124,6 +126,8 @@ cat << EOF >> $basepath/etc/clientlaunch.cfg
 [sm_raid]
         ENVFILE $XYMONCLIENTHOME/etc/xymonclient.cfg
         CMD $XYMONCLIENTHOME/ext/check_sm_raid.sh
+q
+q
         LOGFILE $XYMONCLIENTHOME/logs/check_sm_raid.log
         INTERVAL 5m
 EOF
