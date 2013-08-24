@@ -66,7 +66,7 @@ ${DETAILS}
 
 $LOCATIONLINE
 "
-if [ -e $logfile ]; then
+if [ -e $LOGFILE ]; then
 	rm $LOGFILE
 fi
 
