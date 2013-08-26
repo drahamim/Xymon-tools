@@ -39,7 +39,7 @@ else
 	exit 1
 fi
 
-if [ '$raid | grep -qi 'lsi'' ]; then
+if [ '$raid | grep -qi 'MegaRAID'' ]; then
 	raidtype="hard"
 elif [ $raid | grep -fqi 'Intel' ]; then
 	raidtype="soft"
