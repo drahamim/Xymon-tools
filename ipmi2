@@ -1,0 +1,17 @@
+#!/bin/bash
+
+echo "Sensor Data Repository:"
+
+ipmitool sdr 2>&1 |egrep -v "Chassis Intr|PS Status" | while read line
+ do
+        if [[ $line == *ok ]] ; then
+                echo "ok $line"
+        elif [[ $line == *ns ]] ; then
+                echo "clear $line"
+        elif [[ $line == Could not open device* ]]
+                echo "quack"
+        fi
+
+done
+
+
