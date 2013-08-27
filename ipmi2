@@ -2,16 +2,16 @@
 
 echo "Sensor Data Repository:"
 
-ipmitool sdr 2>&1 |egrep -v "Chassis Intr|PS Status" | while read line
+results=ipmitool sdr 2>&1 |egrep -v "Chassis Intr|PS Status" | while read line
  do
         if [[ $line == *ok ]] ; then
-                echo "ok $line"
+                "green" $line
         elif [[ $line == *ns ]] ; then
-                echo "clear $line"
+                clear $line
         elif [[ $line == Could not open device* ]]
-                echo "quack"
+                yellow
         fi
 
-done
+done 
 
-
+echo " $results"
