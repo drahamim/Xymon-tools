@@ -1,17 +1,18 @@
 #!/bin/bash
 
 echo "Sensor Data Repository:"
-
-results=ipmitool sdr 2>&1 |egrep -v "Chassis Intr|PS Status" | while read line
+tmpfile="sparky.tmp"
+ipmitool sdr 2>&1 |egrep -v "Chassis Intr|PS Status" |while read line
  do
-        if [[ $line == *ok ]] ; then
-                "green" $line
-        elif [[ $line == *ns ]] ; then
-                clear $line
-        elif [[ $line == Could not open device* ]]
-                yellow
-        fi
+        if [[ $line =~ (ok)$ ]] ; then
+               echo "&green $line"
+        elif [[ $line =~ (ns)$ ]] ; then
+               echo "&clear $line"
+        else [[ $line =~ "Could not open device" ]]
+                color=yellow
+	fi
 
-done 
+done >> $tmpfile
 
-echo " $results"
+cat $tmpfile
+rm "$tmpfile"
