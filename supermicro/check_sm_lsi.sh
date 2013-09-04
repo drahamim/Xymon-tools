@@ -58,7 +58,7 @@ fi
 
 ####### Details Assembly section
 
-egrep "((Slot Number)|(Drive\'s)|(PD)|(Size)|(Connected)|(Inquiry)|(Temperature)|(S.M.A.R.T)|^$)" $LOGFILEPD >> $DETAILSFILE
+egrep "((Slot Number)|(Firmware state)|(Drive\'s)|(PD)|(Size)|(Connected)|(Inquiry)|(Temperature)|(S.M.A.R.T)|^$)" $LOGFILEPD >> $DETAILSFILE
 egrep "((Adaptor)|(Virtual)|(RAID)|(Size)|(State)|(Stripe)|(Number)|(Spin\ Up)|(Bad)|^$)" $LOGFILELD >> $DETAILSFILE
 
 DETAILS=`cat $DETAILSFILE`
