@@ -74,6 +74,24 @@ if [ `$ipmit = "no"` ]; then
 	$manager install ipmitool
 fi
 
+###### Apply needed permissions for Xymon and hobbit
+if [ ! `grep -Fq 'xymon' /etc/sudoers` ]; then
+cat <<EOF >> /etc/sudoers
+xymon  ALL = NOPASSWD: /opt/MegaRAID/MegaCli/MegaCli64
+hobbit ALL = NOPASSWD: /opt/MegaRAID/MegaCli/MegaCli64
+xymon  ALL = NOPASSWD: /usr/bin/ipmitool
+hobbit ALL = NOPASSWD: /usr/bin/ipmitool
+xymon  ALL = NOPASSWD: /sbin/dmraid
+hobbit ALL = NOPASSWD: /sbin/dmraid
+
+Defaults:xymon !requiretty
+Defaults:hobbit !requiretty
+EOF
+
+fi
+
+
+
 ##### Copy CFG files to Monitoring Client paths
 echo "copying files to Hobbit/Xymon paths"
 if [ $raidtype = "hard" ]; then
