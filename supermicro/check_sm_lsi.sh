@@ -57,10 +57,11 @@ else
 fi
 
 if [ 'grep "Firmware state" $LOGFILEPD |grep "Failed" = "Failed"' ]; then
-         COLOR="green"
- else
          COLOR="red"
-         MSGLINE="Failed Drive"
+	 MSGLINE="Failed Drive"
+
+else
+         COLOR="green"
 fi
 ####### Details Assembly section
 
