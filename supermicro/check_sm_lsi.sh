@@ -56,7 +56,7 @@ else
 	MSGLINE="S.M.A.R.T errors detected"
 fi
 
-if [ 'grep "Firmware state" $LOGFILEPD |grep "Failed" = "Failed"' ]; then
+if [[ `grep "Firmware state" $LOGFILEPD |grep "Failed"` ]]; then
          COLOR="red"
 	 MSGLINE="Failed Drive"
 
