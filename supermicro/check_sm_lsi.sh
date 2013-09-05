@@ -56,6 +56,12 @@ else
 	MSGLINE="S.M.A.R.T errors detected"
 fi
 
+if [ 'grep "Firmware state" $LOGFILEPD |grep "Failed" = "Failed"' ]; then
+         COLOR="green"
+ else
+         COLOR="red"
+         MSGLINE="Failed Drive"
+fi
 ####### Details Assembly section
 
 egrep "((Slot Number)|(Firmware state)|(Drive\'s)|(PD)|(Size)|(Connected)|(Inquiry)|(Temperature)|(S.M.A.R.T)|^$)" $LOGFILEPD >> $DETAILSFILE
