@@ -21,8 +21,10 @@ if [ -f /etc/redhat-release ]; then
 	os="redhat"
 elif [ "$(grep DISTRIB_RELEASE= /etc/lsb-release| cut -d"=" -f2)" = "12.04" ]; then
 	os="U12.04"
+	release=`cat /etc/lsb-release |grep CODE |cut -d "=" -f2`
 else
 	os="Ubuntu"
+	release=`cat /etc/lsb-release |grep CODE |cut -d "=" -f2`
 fi
 
 if [ -f /etc/redhat-release ]; then 
@@ -67,6 +69,8 @@ $manager update
 ### If the OS is redhat and has an LSI controller install MPT-status
 if [[ $os = "redhat" && $raidtype = "hard" ]]; then 
 	rpm -i MegaCli*
+elif [[ $os = "Ubuntu" && $raid = "hard" ]] ; then
+	echo "deb http://hwraid.le-vert.net/$os $release main" >> /etc/apt/sources.list
 fi
 
 ### If ipmitool is not installed install it
