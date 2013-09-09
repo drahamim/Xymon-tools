@@ -65,7 +65,7 @@ echo "${ipmit}"
 $manager update 
 
 ### If the OS is redhat and has an LSI controller install MPT-status
-if [ "$os = 'redhat' && $raidtype = 'hard'" ]; then 
+if [[ $os = "redhat" && $raidtype = "hard" ]]; then 
 	rpm -i MegaCli*
 fi
 
