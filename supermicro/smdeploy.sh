@@ -70,7 +70,7 @@ if [[ $os = "redhat" && $raidtype = "hard" ]]; then
 fi
 
 ### If ipmitool is not installed install it
-if [ `$ipmit = "no"` ]; then 
+if [[ $ipmit = "no" ]]; then 
 	$manager install ipmitool
 fi
 
