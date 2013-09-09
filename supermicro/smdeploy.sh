@@ -102,7 +102,7 @@ fi
 
 chmod +x $basepath/ext/check_sm_raid.sh
 
-if [ "$hobxy = 'xymon' && $raidlaunch = 'no'" ]; then
+if [[ $hobxy = "xymon" ]]; then
 	cat sm_xy_hardware.cfg >> "$basepath/etc/clientlaunch.cfg"
 else
 	cat sm_hob_hardware.cfg >> "$basepath/etc/clientlaunch.cfg"
