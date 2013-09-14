@@ -70,11 +70,11 @@ $manager update
 if [[ $os = "redhat" && $raidtype = "hard" ]]; then 
 	rpm -i MegaCli*
 elif [[ $os = "Ubuntu" && $raid = "hard" ]] ; then
-	echo "deb http://hwraid.le-vert.net/$os $release main" >> /etc/apt/sources.list
+	cat "deb http://hwraid.le-vert.net/$os $release main" >> /etc/apt/sources.list
 	wget -O - http://hwraid.le-vert.net/debian/hwraid.le-vert.net.gpg.key | sudo apt-key add -
 
 elif [[ $os = "U12.04" && $raid = "hard" ]] ; then
-        echo "deb http://hwraid.le-vert.net/$os $release main" >> /etc/apt/sources.list
+        cat "deb http://hwraid.le-vert.net/$os $release main" >> /etc/apt/sources.list
         wget -O - http://hwraid.le-vert.net/debian/hwraid.le-vert.net.gpg.key | sudo apt-key add -
 fi
 
