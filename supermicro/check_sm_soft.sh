@@ -29,7 +29,7 @@ EOF
 #######################
 function dmraid {
 sudo $CMD >> $LOGFILE
-if grep "status" $LOGFILE |grep inconsistent; then
+if [ 'grep "status" $LOGFILE |grep inconsistent' ]; then
 	DISK=`dmraid -r |sort -rn| diff $DISKLIST - |grep dev |cut -c3-100`
 	COLOR="red"
 	MSGLINE="disk $DISK has failed"
@@ -53,7 +53,7 @@ DETAILS=`cat /proc/mdstat`
 
 }
 
-if sudo /sbin/dmraid -s | grep "no raid disks" ; then
+if [ 'sudo /sbin/dmraid -s | grep "no raid disks"' ]; then
         mdstat
 else
         dmraid
