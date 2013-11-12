@@ -43,9 +43,10 @@ fi
 
 if [ '$raid | grep -qi 'MegaRAID'' ]; then
 	raidtype="hard"
-elif [ $raid | grep -fqi 'Intel' ]; then
+elif [ '$raid | grep -fqi 'Intel'' ]; then
 	raidtype="soft"
 else
+
 	echo 2>&1 "Error: Issue defineing RAID"
 	exit 1
 fi
