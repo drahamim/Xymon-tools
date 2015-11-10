@@ -11,7 +11,7 @@ Later Branching will be implimented to designate OS compatibility.
 Xymon-tools
 ===========
 
-### Conributions
+### Contributions
 Please submit formatting suggestion through Merge Requests. 
 Please submit Code Errors in detail through the Issue Tracker. 
 
